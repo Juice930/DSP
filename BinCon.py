@@ -17,32 +17,37 @@ def C2(x): #Complemento a 2
     x.reverse()
     return x
 
-def IE3float(x):
-    if type(x)==list:   return list(map(lambda n:__IE3float(n),x))
-    else:               return __IE3float(x)
+def IE3(x):
+    if type(x)==list:   return list(map(lambda n:__IE3(n),x))
+    else:               return __IE3(x)
     
-def __IE3float(num):
+def __IE3(num):
     if num==0 or abs(num)<2**-126:
         return [0]*32
-    elif num>2**31-1:
+    elif num>2**128-1:
         return [0]+[1 for i in range(31)]
-    elif num<-2**31-1:
+    elif num<-2**128-1:
         return [1]+[1 for i in range(31)]
     s=0
     if num<0:
         s=1
         num=-num
-    L=int(np.log2(num)+1)
-    exp=Qi(int(127+np.log2(num)),0,8)
-    if L>=1:
-        aux=Qi(int(num),0,L)[1::]+Qi(num-int(num),23-L+1,23-L+1)
+    if 0<=num<2**64:
+        L=int(np.log2(num)+1)
+        exp=Qi(int(127+np.log2(num)),0,8)        
+    else:
+        L=64+int(np.log2(num/(2**64))+1)
+        exp=Qi(int(127+64+np.log2(num/2**64)),0,8)
+        
+    if L>=1:    
+        aux=Qi(num*2**-L,24,24)[1::]
     else:
         aux=Qi(num*2**(-L-1),24,24)[1::]
     return [s]+exp+aux
 
 def InvIE3(arr):
-    if type(arr[0])==list:   return list(map(lambda n:__InvIE3(n),arr))
-    else:               return __InvIE3(arr)
+    if type(arr[0])==list:  return list(map(lambda n:__InvIE3(n),arr))
+    else:                   return __InvIE3(arr)
     
 def __InvIE3(arr):
     exp=invQi(arr[1:9],0)-127
