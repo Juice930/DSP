@@ -5,7 +5,10 @@ import numpy as np
 def C1(x): #Complemento a 1
     return list(map(lambda n:n^1,x))
 
-def C2(x): #Complemento a 2 
+def C2(x):
+    if type(x[0])==list:   return list(map(lambda n:__C2(n),x))
+    else:               return __C2(x)
+def __C2(x): #Complemento a 2 
     if not (1 in x):
         return [0]*len(x)
     x=C1(x)
@@ -16,7 +19,17 @@ def C2(x): #Complemento a 2
             break        
     x.reverse()
     return x
-
+def hexcon(x):
+    if type(x[0])==list:   return list(map(lambda n:hex(int(__bincon(n)[2:],2)),x))
+    else:               return hex(int(__bincon(x)[2:],2))
+def bincon(x):
+    if type(x[0])==list:   return list(map(lambda n:__bincon(n),x))
+    else:               return __bincon(x)
+def __bincon(x):
+    res=str()
+    for i in x:
+        res+=str(i)
+    return bin(int(res,2))
 def IE3(x):
     if type(x)==list:   return list(map(lambda n:__IE3(n),x))
     else:               return __IE3(x)
