@@ -121,4 +121,7 @@ def convol(x,y):            #Convolución discreta de dos arreglos
             except:
                 res[n]+=0
     return res
-
+def corr(x,y=[]):           #Correlación o Autocorrelación
+    if y==[]:               #Si solo se dio un argumento se asume autocorrelación
+        return convol(x,x[::-1])
+    return convol(x,y[::-1])

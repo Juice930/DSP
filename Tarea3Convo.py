@@ -6,10 +6,12 @@ i,L=24,32 #Solución alternativa!
 x=[-1.978, -2.884, 3.2431, -9.9132]
 h=[-3.2566, 3.1432, -4.1654, 5.257, -4.6549]
 
-print(bc.hexcon(bc.IE3(x)))
+#print(bc.hexcon(bc.IE3(x)))
 #conv=list(np.convolve(x,h))
 #print(np.array(conv)-np.array(bc.invQi(bc.Qi(conv,2*i,2*L-1,1),2*i,1)))
 #conv=list(np.convolve(x,h))
+print(bc.corr(x,h))
+#print(np.correlate(x,h,"full"))
 #conv=bc.Qi(conv,i,L,1)
 
 #print(conv)
