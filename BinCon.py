@@ -121,7 +121,40 @@ def convol(x,y):            #Convolución discreta de dos arreglos
             except:
                 res[n]+=0
     return res
+
 def corr(x,y=[]):           #Correlación o Autocorrelación
     if y==[]:               #Si solo se dio un argumento se asume autocorrelación
         return convol(x,x[::-1])
     return convol(x,y[::-1])
+ 
+def syntheticdivision(dividend, divisor,it):    #Código adaptado a nuestras necesidades
+    '''Fast polynomial division by using Extended Synthetic Division. Also works with non-monic polynomials.'''
+    # dividend and divisor are both polynomials, which are here simply lists of coefficients. Eg: x^2 + 3x + 5 will be represented as [1, 3, 5]
+    h = []
+    out = list(dividend) # Copy the dividend
+    normalizer = divisor[0]
+    for k in range(it-1):
+        for i in range(len(dividend)-(len(divisor)-1)):
+            out[i] /= normalizer
+            coef = out[i]
+            if coef != 0:
+                for j in range(1, len(divisor)):
+                    out[i + j] += -divisor[j] * coef
+        separator = -(len(divisor)-1)
+        h.append(out[:separator][0]*(-1)**k)
+        out=list(map(lambda n:-n,out[separator:]))+[0]
+    return np.array(h)
+
+def getEcenDif(y):
+    h=[y[0]]
+    for i in range(1,len(y)):
+        h.append(y[i]-sum([y[j]*h[-j] for j in range(1,i)]))
+    return np.array(h)
+
+def evaluate(it,a):
+    h=[a[0]]
+    for i in range(1,len(a)):
+        h.append(sum([a[j]*h[-j] for j in range(1,i+1)]))
+    for i in range(len(a),it):
+        h.append(sum([a[j]*h[-j] for j in range(1,len(a))]))
+    return np.array(h)
