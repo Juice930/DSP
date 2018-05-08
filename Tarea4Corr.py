@@ -29,22 +29,21 @@ D = [1,-0.4,-0.05]
 x=[1,2,1,1]
 h=[1,1,2,1]
 #print(bc.syntheticdivision(N,D,11))
-x=np.linspace(0,150,150)
-y1=[1,1.95,1.9625,1.061375,0.107406,-0.084194,0.535587,1.290123,1.459074,0.924207,0.208306,-0.060697]
+y1=[1,1.95,1.9625,1.084375,0.152256,-0.039056,0.560527,1.293624,1.458176,0.937099,0.238059,-0.027158,0.301328,0.838841,1.058334]
 h1=bc.getEcenDif(y1)
-y1=bc.evaluate(150,h1)
+y1=bc.evaluate(h1,150)
 
-y2=[1,1.95,1.9625,1.061375,0.107406,-0.084194,0.535587]
+y2=[1,1.95,1.9625,1.084375,0.152256,-0.039056,0.560527,1.293624,1.458176,0.937099,0.238059,-0.027158,0.301328,0.838841,1.058334]
 h2=bc.getEcenDif(y2)
-y2=bc.evaluate(150,h2)
+y2=bc.evaluate(h2,150)
 plt.plot(y1,label='Modelo con 12 términos')
 plt.plot(y2,'r',label='Modelo con 5 términos')
 plt.legend(bbox_to_anchor=(0.5,0.9),loc=2,borderaxespad=0.)
-
-raices=np.roots(h2[1:])
+plt.show()
+Hchida=[1.00000000e+00,   1.95000000e+00,  -1.84000000e+00,8.45500000e-01]
+plt.plot(bc.evaluate(Hchida,100))
+raices=np.roots([-1]+Hchida[1:])
 print(raices)
-print(list(map(lambda n:np.abs(n),raices)))
-
 """
 print(bc.convol(x,h))
 print(bc.corr(x))

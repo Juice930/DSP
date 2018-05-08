@@ -158,3 +158,44 @@ def evaluate(it,a):
     for i in range(len(a),it):
         h.append(sum([a[j]*h[-j] for j in range(1,len(a))]))
     return np.array(h)
+
+def Wkn(k,N=32):
+    return np.exp(-2j*np.pi*k/N)
+
+def rev(a):
+    a.reverse()
+    return a
+
+def indix(N):
+    L=int(np.log2(N)-1)
+    index=[]
+    for i in range(N//2):
+        index.append(invQi(rev(Qi(i,0,L)),0))
+    return index,L
+
+def __fft(h,N,radix):
+    y=h.copy()
+    for i in range(0,N,2*radix):
+        for j in range(radix):
+            y[i+j]+=h[i+j+radix]*Wkn(j*N//(2*radix),N)
+            y[i+j+radix]=h[i+j]-h[i+j+radix]*Wkn(j*N//(2*radix),N)
+    return y
+
+def fft(h):
+    N=len(h)
+    index,L=indix(N)
+    y=h.copy()
+    h=[]
+    for i in index:
+        h.append(y[i]+y[i+N//2])
+        h.append(y[i]-y[i+N//2])
+    print("Iteración número 0")
+    for i,j in list(enumerate(h)):
+        print(i,j)
+    for i in range(1,L+1):
+        h=__fft(h,N,2**i)
+        print("Iteración número "+str(i))
+        for j,k in list(enumerate(h)):
+            print(j.k)
+        
+    return h
