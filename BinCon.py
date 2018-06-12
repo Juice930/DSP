@@ -70,40 +70,23 @@ def __InvIE3(arr):
 def Qi(x,i,L,signed=0): #Convertir número o números de decimal a arreglo binario
     if type(x)==list:   return list(map(lambda n:__Qi(n,i,L,signed),x))
     else:               return __Qi(x,i,L,signed=0)
-        
-def __Qi(x,i,L,signed=0):#Convierte un solo número a arreglo binario
-    sol=list()
-    neg=False
-    if abs(x)>2**(L-i): return 'error'
-    if x<0:
-        sol.append(0)
-        neg=True
-        x=-x
-        L-=1
+
+def __Qi(x,i,L,signed=0):
+    if abs(x)>2**(L-i) and L>i and i<0: return 'error'
+    res=bin(int(x*2**i))
+    Long=len(res[res.find('b')+1:])
+    if res[0]=='-':
+        return [1]*(L-Long)+C2([int(i) for i in res[res.find('b')+1:]])
     elif signed!=0:
-        sol.append(0)
-        L-=1
-    for k in range(L):
-        if k<L-i:
-            val=int(int(x)/(2**(L-i-k-1)))
-            if val==2:
-                sol[0]=1
-                val=0
-            sol.append(val)
-            x=x%(2**(L-i-k-1))
-        else:
-            sol.append(int(x*2))
-            x=2*x-sol[-1]
-    if neg==True:
-        return C2(sol)
-    return sol
+        return [0]*(L-Long)+list([int(i) for i in res[res.find('b')+1:]])
+    return [0]*(L-Long)+list([int(i) for i in res[res.find('b')+1:]])    
 
 def invQi(num,i,signed=0):  #Convierte de arreglo o arreglos binarios a decimal
     if type(num[0])==list: return list(map(lambda n:__invQi(n,i,signed),num))
     else:               return __invQi(num,i,signed)
-    
 def __invQi(num,i,signed=0):#Sirve para un solo arreglo binario a decimal
     if(type(num)!=list): return 'error'
+    #TODO:Checar con el signado!!!
     if signed!=0:
         if num[0]==1:
             num=C2(num)
